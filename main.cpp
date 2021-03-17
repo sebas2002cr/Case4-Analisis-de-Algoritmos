@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -16,58 +17,66 @@ int main(int argc, char** argv) {
 	cout << endl;
 	
 	crearImagen(alto, ancho);
-	
-	cout << "Archivo JSON listo." << endl;
 	return 0;
 }
 
 void crearImagen(int pAlto, int pAncho)
 {
-	int matriz[pAlto][pAncho];
 	int randX, randY, cantidadPuntos;
-	cantidadPuntos = (pAlto*pAncho) * 0.1;
-	//======================================================================================
+	int random;
+	string color = "";
+	cantidadPuntos = (pAlto*pAncho) * 0.2;
+	
+	
+	int last_black[2];
+	last_black[0] = 2 * (pAncho/3);
+	last_black[1] = 2 * (pAlto/3);
+	ostringstream cadena;
+	cadena << "[\n";
+	//Creación de puntos======================================================================================
 	while (cantidadPuntos > 0)
 	{
 		randX = rand()%pAncho;
 		randY = rand()%pAlto;
+		random = rand()%100;
 		
-		if (matriz[randY][randX] != 1)
+		if (random<40)
 		{
-			matriz[randY][randX] = 1;
-			cantidadPuntos--;
+			color = "gray";
 		}
 		else
 		{
-			continue;
+			do{
+				randX =  last_black[0] + (-10 + rand()%20);
+				randY =  last_black[1] + (-10 + rand()%20);
+			}while (randX < 0 or randX > pAncho or randY < 0 or randY > pAlto);
+			
+			
+			color = "black";
+			
+			last_black[0] = randX;
+			last_black[1] = randY;
 		}
+		cadena << "\t\t[" << "\"" << color << "\"," << randX << "," << randY << "]";
+		cantidadPuntos--;
+		cadena << (cantidadPuntos<=0 ? "":",") << endl;
 	}
+	
+	cadena << "\t]" << endl;
 	
 	//======================================================================================
 	//Generar JSON
-	string cadena = "[\n";
-	for (int i=0; i<pAlto; i++)
-	{
-		cadena += "\t\t\t[";
-		for (int j=0; j<pAncho; j++)
-		{
-			cadena += (matriz[i][j]==1 ? "1":"0");
-			cadena += (j==pAncho-1 ? "":",");
-		}
-		
-		cadena += (i==pAlto-1 ? "]\n":"],\n");
-	}
-	cadena += "\t]\n";
-	//cout << cadena << endl;
 	ofstream file;
-  	file.open("matriz.json");
+  	file.open("resultado.json");
   	file << "{\n";
   	file << "\t\"alto\":" << pAlto << ",\n";
   	file << "\t\"ancho\":" << pAncho << ",\n";
-  	file << "\t\"matriz\":" << cadena;
+  	file << "\t\"puntos\":" << cadena.str();
   	
   	file << "}";
   	file.close();
+  	
+  	cout << "Archivo JSON listo." << endl;
 }
 
 

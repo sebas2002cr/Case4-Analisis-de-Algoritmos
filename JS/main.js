@@ -24,35 +24,19 @@ function show(pData)
     console.log("Alto: ", alto);
 
     var contexto = lienzo.getContext("2d");
-    contexto.fillStyle = "black";
 
-    var matriz = pData["matriz"];
-
-    //var contador = 0;
-    for (var y=0; y<ancho; y++)
+    var puntos = pData["puntos"];
+    var contador = 0;
+    for (var i = 0;  i<puntos.length; i++)
     {
-        for (var x=0; x<alto; x++)
-        {
-            if (matriz[x][y] == 1)
-            {
-                //contexto.fillStyle = "black";
-                contexto.fillRect(y, x, 1, 1);
-                //contador++;
-            }
-            /*
-            else
-            {
-                contexto.fillStyle = "cyan";
-            }*/
-            
-        }
+        contexto.fillStyle = puntos[i][0];
+        contexto.fillRect(puntos[i][1], puntos[i][2], 1, 1);
     }
 
-    //console.log("Contador: ",contador);
 }
 
 //usage:
-readTextFile("matriz.json", function(text){
+readTextFile("resultado.json", function(text){
     var data = JSON.parse(text);
     show(data)
 });
