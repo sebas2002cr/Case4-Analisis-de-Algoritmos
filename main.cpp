@@ -4,17 +4,20 @@
 
 using namespace std;
 
-#define ALTO 100
-#define ANCHO 100
-
 void crearImagen(int, int);
-void guardarMatriz();
 
 int main(int argc, char** argv) {
 	
-	crearImagen(ALTO, ANCHO);
+	int alto, ancho;
 	
-	cout << "Programa finalizado" << endl;
+	cout << "Digite el alto: "; cin >> alto;
+	cout << endl;
+	cout << "Digite el ancho: "; cin >> ancho;
+	cout << endl;
+	
+	crearImagen(alto, ancho);
+	
+	cout << "Archivo JSON listo." << endl;
 	return 0;
 }
 
@@ -22,11 +25,8 @@ void crearImagen(int pAlto, int pAncho)
 {
 	int matriz[pAlto][pAncho];
 	int randX, randY, cantidadPuntos;
-	cantidadPuntos = (pAlto*pAncho) * 0.2;
-	
-	//cout << "Cantidad de puntos: " << cantidadPuntos << endl; 
-	
-	
+	cantidadPuntos = (pAlto*pAncho) * 0.1;
+	//======================================================================================
 	while (cantidadPuntos > 0)
 	{
 		randX = rand()%pAncho;
@@ -41,26 +41,32 @@ void crearImagen(int pAlto, int pAncho)
 		{
 			continue;
 		}
-			
 	}
 	
-	//guardarMatriz(matriz, "matriz.txt");
-	string cadena = "";
+	//======================================================================================
+	//Generar JSON
+	string cadena = "[\n";
 	for (int i=0; i<pAlto; i++)
 	{
-		cadena += "[";
+		cadena += "\t\t\t[";
 		for (int j=0; j<pAncho; j++)
 		{
 			cadena += (matriz[i][j]==1 ? "1":"0");
 			cadena += (j==pAncho-1 ? "":",");
 		}
 		
-		cadena += "]\n";
+		cadena += (i==pAlto-1 ? "]\n":"],\n");
 	}
+	cadena += "\t]\n";
 	//cout << cadena << endl;
 	ofstream file;
   	file.open("matriz.json");
-  	file << "{" + cadena + "}";
+  	file << "{\n";
+  	file << "\t\"alto\":" << pAlto << ",\n";
+  	file << "\t\"ancho\":" << pAncho << ",\n";
+  	file << "\t\"matriz\":" << cadena;
+  	
+  	file << "}";
   	file.close();
 }
 
