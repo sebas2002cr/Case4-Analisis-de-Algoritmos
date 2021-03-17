@@ -67,7 +67,7 @@ void crearImagen(int pAlto, int pAncho)
 	//======================================================================================
 	//Generar JSON
 	ofstream file;
-  	file.open("resultado.json");
+  	file.open("JS/resultado.json");
   	file << "{\n";
   	file << "\t\"alto\":" << pAlto << ",\n";
   	file << "\t\"ancho\":" << pAncho << ",\n";
