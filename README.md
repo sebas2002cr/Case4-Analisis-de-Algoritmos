@@ -2,7 +2,7 @@
 
 Para probar el programa, simplemente tiene que compilarlo con cualquier compilador de C++. Puede modificar las dimensiones de la imagen que se generará desde el main.
 
-La explicación de 4 líneas que se pidió, se encuentra dentro de los comentarios del archivo main.cpp, justo después de la función main.
+La explicación de 4 líneas y las demostraciones de la complejidad del algoritmo que se pidieron, se encuentran dentro de los comentarios del archivo main.cpp, justo después de la función main.
 
 
 PARTE EXTRA:
